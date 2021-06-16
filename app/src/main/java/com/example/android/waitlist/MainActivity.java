@@ -23,7 +23,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.android.waitlist.database.AppDatabase;
@@ -54,8 +53,6 @@ public class MainActivity extends AppCompatActivity {
         mNewGuestNameEditText = (EditText) findViewById(R.id.person_name_edit_text);
         mNewPartySizeEditText = (EditText) findViewById(R.id.party_count_edit_text);
 
-            // Set the layout for the RecyclerView to be a linear layout, which measures and
-        // positions items within a RecyclerView into a linear list
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         // Initialize the adapter and attach it to the RecyclerView
@@ -67,11 +64,7 @@ public class MainActivity extends AppCompatActivity {
 
         mDb = AppDatabase.getInstance(getApplicationContext());
 
-        /*
-         Add a touch helper to the RecyclerView to recognize when a user swipes to delete an item.
-         An ItemTouchHelper enables touch behavior (like swipe and move) on each ViewHolder,
-         and uses callbacks to signal when a user is performing these actions.
-         */
+
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
@@ -81,7 +74,6 @@ public class MainActivity extends AppCompatActivity {
             // Called when a user swipes left or right on a ViewHolder
             @Override
             public void onSwiped(final RecyclerView.ViewHolder viewHolder, int swipeDir) {
-                // Here is where you'll implement swipe to delete
                 AppExecutors.getInstance().diskIO().execute(new Runnable() {
                     @Override
                     public void run() {
@@ -113,8 +105,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 final List<GuestEntry> guests = mDb.guestDao().loadAllGuests();
-                // We will be able to simplify this once we learn more
-                // about Android Architecture Components
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
